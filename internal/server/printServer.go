@@ -1,3 +1,4 @@
+// H:\Workspace\Go-FederatedLearning\internal\server\printServer.go
 package server
 
 import (
@@ -6,28 +7,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type HTTPServer struct {
-	engine       *gin.Engine
+type PrintServer struct {
 	printHandler *print.Handler
 }
 
-func NewHTTPServer(printHandler *print.Handler) *HTTPServer {
-	return &HTTPServer{
-		engine:       gin.Default(),
+func NewHTTPServer(printHandler *print.Handler) *PrintServer {
+	return &PrintServer{
 		printHandler: printHandler,
 	}
 }
 
-func (s *HTTPServer) SetupRoutes() {
-	v1 := s.engine.Group("/api/v1")
+func (s *PrintServer) SetupRoutes(engine *gin.Engine) {
+	v1 := engine.Group("/api/v1")
 	{
 		printGroup := v1.Group("/print")
 		{
 			printGroup.POST("/message", s.printHandler.HandlePrint)
 		}
 	}
-}
-
-func (s *HTTPServer) Start(addr string) error {
-	return s.engine.Run(addr)
 }
