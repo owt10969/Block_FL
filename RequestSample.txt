@@ -1,0 +1,46 @@
+{
+    "device_id": "d123456",
+    "user_id": "u78910",
+    "session_id": "s56789",
+    "image": {
+        "format": "jpeg",
+        "data": "base64_encoded_string...",
+        "metadata": {
+            "width": 1024,
+            "height": 1024,
+            "timestamp": "2024-12-19T10:00:00Z",
+            "color_space": "RGB",
+            "orientation": "portrait"
+        }
+    },
+    "location": {
+        "latitude": 25.033,
+        "longitude": 121.565,
+        "altitude": 50
+    },
+    "device_info": {
+        "model": "iPhone 14",
+        "os": "iOS 17.1",
+        "battery_level": 0.85,
+        "network": "wifi"
+    },
+    "settings": {
+        "return_confidence": true,
+        "max_predictions": 3,
+        "preprocessing_options": {
+            "crop": {
+                "x": 0,
+                "y": 0,
+                "width": 512,
+                "height": 512
+            },
+            "adjust_brightness": true
+        }
+    },
+    "context": "night scene with street lights",
+    "network_quality": "4G",
+    "debug": {
+        "enable_logging": true,
+        "log_level": "info"
+    }
+}
