@@ -1,9 +1,14 @@
+// H:\Workspace\Go-FederatedLearning\internal\app\builder\service_builder.go
 package builder
 
-import "Go-FederatedLearning/internal/service/print"
+import (
+	"Go-FederatedLearning/internal/service/image"
+	"Go-FederatedLearning/internal/service/print"
+)
 
-type ServiceBuilder struct { 
+type ServiceBuilder struct {
 	withPrint bool
+	withImage bool
 	// Other service
 	// withImage bool
 	// withModel bool
@@ -11,6 +16,7 @@ type ServiceBuilder struct {
 
 type ServiceContainer struct {
 	PrintService print.Service
+	ImageService image.Service
 	// Other service..
 }
 
@@ -24,14 +30,23 @@ func (b *ServiceBuilder) WithPrintService() *ServiceBuilder {
 	return b
 }
 
+// Start ImageService with optional.
+func (b *ServiceBuilder) WithImageService() *ServiceBuilder {
+	b.withImage = true
+	return b
+}
+
 // Building selected service.
-func (b *ServiceBuilder) Build() (*ServiceContainer) {
+func (b *ServiceBuilder) Build() *ServiceContainer {
 	container := &ServiceContainer{}
 
 	if b.withPrint {
 		container.PrintService = print.NewService()
 	}
 
+	if b.withImage {
+		container.ImageService = image.NewService()
+	}
+
 	return container
 }
-
