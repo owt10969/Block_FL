@@ -27,6 +27,7 @@ func NewHandler(imageService imageService.Service) *Handler {
 	}
 }
 
+// 驗證Image File用
 func validateImageFile(file *multipart.FileHeader) error {
 	// 檢查文件大小
 	if file.Size > maxFileSize {
@@ -42,6 +43,7 @@ func validateImageFile(file *multipart.FileHeader) error {
 	return nil
 }
 
+// 讀取Image File用
 func readImageFile(file *multipart.FileHeader) ([]byte, error) {
 	openedFile, err := file.Open()
 	if err != nil {
@@ -57,6 +59,7 @@ func readImageFile(file *multipart.FileHeader) ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
+// 處理Image -> Vector(向量) Function (Call by imageServer.go)
 func (h *Handler) HandleImageToVector(c *gin.Context) {
 	// 1. 獲取上傳的文件
 	file, err := c.FormFile("image")
@@ -69,6 +72,7 @@ func (h *Handler) HandleImageToVector(c *gin.Context) {
 
 	// 2. 驗證文件
 	if err := validateImageFile(file); err != nil {
+		// Logic function will call from imageService.go
 		c.JSON(http.StatusBadRequest, imageTypes.ImageToVectorResponse{
 			Error: err.Error(),
 		})
@@ -77,6 +81,7 @@ func (h *Handler) HandleImageToVector(c *gin.Context) {
 
 	// 3. 讀取文件內容
 	imageData, err := readImageFile(file)
+	//fmt.Printf("imageData: %v", imageData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, imageTypes.ImageToVectorResponse{
 			Error: err.Error(),

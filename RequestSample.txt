@@ -16,7 +16,6 @@
     "location": {
         "latitude": 25.033,
         "longitude": 121.565,
-        "altitude": 50
     },
     "device_info": {
         "model": "iPhone 14",
