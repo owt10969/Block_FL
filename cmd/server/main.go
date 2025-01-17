@@ -15,6 +15,7 @@ func main() {
 	service := builder.NewServiceBuilder().
 		WithPrintService().
 		WithImageService().
+		WithGlobalService().
 		Build()
 
 	// Build Handler
@@ -29,6 +30,9 @@ func main() {
 
 	printServer := server.NewHTTPServer(handlers.PrintHandler)
 	printServer.SetupRoutes(engine)
+
+	globalServer := server.NewHTTPServer(handlers.GlobalHandler)
+	globalServer.SetupRoutes(engine)
 
 	if err := engine.Run(":8080"); err != nil {
 		log.Fatal("Server failed to start:", err)

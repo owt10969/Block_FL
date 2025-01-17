@@ -29,6 +29,31 @@ func validateRequest(request *globalType.UserRequest) error {
 	if request.Session == "" {
 		return errors.New("Sessions cannot be empty.")
 	}
+
+	return nil
 }
 
 // 拆分Request -> image API (Python Model), Global API (Blockchain)
+
+// Make hashvalue
+func (h *Handler) HandleHashValue( c *gin.Context) {
+	 var req globalType.UserRequest
+	 
+	 if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid JSON: " + err.Error(),
+		})
+		return
+	 }
+
+	 hxValue, err := h.globalService.ConverToHash(c.Request.Context, req)
+	 if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":　"HashValue generated",
+		"Hashvalue": hxValue.HashValue
+	})
+}
