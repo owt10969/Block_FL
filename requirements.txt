@@ -1,0 +1,7 @@
+flwr==1.14.0
+torch==2.5.1+cu124
+torchvision==0.20.1+cu124
+torchaudio==2.5.1+cu124
+rsa==4.9
+tqdm==4.67.1
+pickle5==0.0.11
