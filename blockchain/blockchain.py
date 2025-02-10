@@ -364,6 +364,12 @@ class BlockChain:
                     print(f"[*] Receive add_node broadcast by {address_concat}...")
                     self.node_address.add(parsed_message["data"])
                     continue
+                elif parsed_message["request"] == "notify_all":
+                    print(f"[*] Received notify_all message: {parsed_message['data']}")
+                    # TODO
+                    response = {"message": "Received notify_all"}
+                    connection.sendall(json.dumps(response).encode('utf-8'))
+                    continue
                 else:
                     response = {
                         "message": "Unknown command."
