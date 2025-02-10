@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from blockchain.transaction import Transaction
+from mq.rabbitmq_client import send_transaction_message
 import json
 
 try:
@@ -29,33 +30,20 @@ def get_balance(address): # 取得指定位置的餘額
     }
     """
 def add_transaction():
-    if not fed_Blockchain:
-        return jsonify({"error": "Blockchain not initialized"}), 500
-    
     data = request.get_json() or {}
-    sender = data.get("sender", "")
-    receiver = data.get("receiver", "")
-    amount = data.get("amount", )
-    fee = data.get("fee", 0)
-    signature = data.get("signature", "")
-    message = data.get("message", "")
+    tx_data = {
+        "sender": data.get("sender", ""),
+        "receiver": data.get("receiver", ""),
+        "amount": data.get("amount", 0),
+        "fee": data.get("fee", 0),
+        "signature": data.get("signature", ""),
+        "message": data.get("message", "")
+    }
 
-    new_tx = Transaction(
-        sender = sender,
-        receiver = receiver,
-        amount = amount,
-        fee = fee,
-        message = message,
-        hash_value = "",
-        metadata={}
-    )
+    send_transaction_message(tx_data) # 塞進ＭＱ
 
-    success, result_message = fed_Blockchain.add_transaction(new_tx, signature)
+    return jsonify({"message": "Transaction request accepted. Will be processed asynchronously."})
 
-    return jsonify({
-        "success": success,
-        "message": result_message
-    })
 
 @app.route('/mining/mine_block', methods=['POST']) # 手動觸發挖礦
 """
@@ -302,4 +290,5 @@ def broadcast_message():
         "data": req_data,
         "nodes": list(fed_Blockchain.node_address)
     })
+
 
