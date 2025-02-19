@@ -18,7 +18,8 @@ def get_balance(address): # 取得指定位置的餘額
     return jsonify({"address": address, "balance": balance})
 
 @app.route('/pendding/transaction', methods=['POST']) # 新增交易到pending_transaction
-"""
+def add_transaction():
+    """
     新增交易到 pending_transactions
     Body 參數舉例:
     {
@@ -29,7 +30,6 @@ def get_balance(address): # 取得指定位置的餘額
         "signature": "base64_signature"
     }
     """
-def add_transaction():
     data = request.get_json() or {}
     tx_data = {
         "sender": data.get("sender", ""),
@@ -46,14 +46,14 @@ def add_transaction():
 
 
 @app.route('/mining/mine_block', methods=['POST']) # 手動觸發挖礦
-"""
-手動觸發挖礦
-Body 參數舉例:
-{
-    "miner": "miner_address"
-}
-"""
 def mine_block():
+    """
+    手動觸發挖礦
+    Body 參數舉例:
+    {
+        "miner": "miner_address"
+    }
+    """
     if not fed_Blockchain:
         return jsonify({"error": "Blockchain not initialized"}), 500
     
@@ -68,7 +68,7 @@ def mine_block():
     current_diff = fed_Blockchain.adjust_difficulty() # 調整難度
 
     return jsonify({
-        "mined": True if result not False else False
+        "mined": True if result is not False else False,
         "current_difficulty": current_diff
     })
 

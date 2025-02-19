@@ -12,8 +12,8 @@ func main() {
 	service := builder.NewServiceBuilder().
 		WithPrintService().
 		WithImageService().
-		WithImageService
-	Build()
+		//WithImageService
+		Build()
 
 	// Build Handler
 	handlers := container.NewHandlerContainer(service)
