@@ -12,6 +12,7 @@ func main() {
 	service := builder.NewServiceBuilder().
 		WithPrintService().
 		WithImageService().
+		WithLineBotService(),
 		//WithImageService
 		Build()
 
@@ -24,5 +25,10 @@ func main() {
 
 	if err := httpServer.Start(":8080"); err != nil {
 		log.Fatal("Server failed to start:", err)
+	}
+
+	lineBotSrv := server.NewLineBotServer(handlers.LineBotHandler)
+	if err := lineBotSrv.Start(":8082"); err != nil {
+		log.Fatal("Line bot server start failed:", err)
 	}
 }
